@@ -7,7 +7,7 @@ framework: "net8.0"
 overview: "Rating-badge artwork from a self-hosted OpenPosterDB instance."
 description: >
   Fetches posters, backdrops, logos and episode stills (with rating badges)
-  from a self-hosted OpenPosterDB / RPDB-compatible instance, by each library
+  from a self-hosted OpenPosterDB instance, by each library
   item's IMDb / TMDB / TVDB id. The base URL and API key are configurable, so
   it points at your own instance rather than a hosted service.
 category: "Metadata"

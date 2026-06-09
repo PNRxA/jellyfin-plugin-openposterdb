@@ -11,7 +11,7 @@ namespace Jellyfin.Plugin.OpenPosterDB
 {
     /// <summary>
     /// The OpenPosterDB plugin. Registers remote image providers that fetch
-    /// rating-badge artwork from a self-hosted OpenPosterDB (RPDB-compatible) instance.
+    /// rating-badge artwork from a self-hosted OpenPosterDB instance.
     /// </summary>
     public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     {
@@ -37,7 +37,7 @@ namespace Jellyfin.Plugin.OpenPosterDB
         /// <inheritdoc />
         public override string Description =>
             "Fetches posters, backdrops, logos and episode stills (with rating badges) " +
-            "from a self-hosted OpenPosterDB / RPDB-compatible instance, by each item's IMDb / TMDB / TVDB id.";
+            "from a self-hosted OpenPosterDB instance, by each item's IMDb / TMDB / TVDB id.";
 
         /// <inheritdoc />
         public override Guid Id => Guid.Parse("f3a7c2e1-9b4d-4e6a-8c1f-2d5b7e9a0c34");

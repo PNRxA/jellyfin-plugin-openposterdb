@@ -2,7 +2,7 @@
   {
     "guid": "f3a7c2e1-9b4d-4e6a-8c1f-2d5b7e9a0c34",
     "name": "OpenPosterDB",
-    "description": "Fetches posters, backdrops, logos and episode stills (with rating badges) from a self-hosted OpenPosterDB / RPDB-compatible instance, by each item's IMDb / TMDB / TVDB id.",
+    "description": "Fetches posters, backdrops, logos and episode stills (with rating badges) from a self-hosted OpenPosterDB instance, by each item's IMDb / TMDB / TVDB id.",
     "overview": "Rating-badge artwork from a self-hosted OpenPosterDB instance.",
     "owner": "PNRxA",
     "category": "Metadata",
