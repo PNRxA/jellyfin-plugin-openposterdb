@@ -1,13 +1,13 @@
 # Jellyfin Plugin — OpenPosterDB
 
-A Jellyfin remote image provider for [OpenPosterDB](https://github.com/PNRxA/openposterdb) — a
-self-hosted, drop-in replacement for RPDB that overlays rating badges on movie/TV artwork.
+A Jellyfin remote image provider for [OpenPosterDB](https://github.com/PNRxA/openposterdb). It fetches
+posters, backdrops, logos and episode stills — with rating badges overlaid — from your OpenPosterDB
+instance and offers them as artwork for items in your library.
 
-Unlike the stock RPDB Jellyfin plugin (which hardcodes `api.ratingposterdb.com`), this plugin has a
-**configurable Base URL**, so it points at *your own* OpenPosterDB instance. It also adds **episode
-still** support, which the RPDB plugin lacks.
+The instance Base URL and API key are configurable, so the plugin points at whichever OpenPosterDB
+instance you run.
 
-It asks Jellyfin to fetch artwork for each library item from:
+For each library item, it asks Jellyfin to fetch artwork from:
 
 ```
 {BaseUrl}/{ApiKey}/{id_type}/{poster|backdrop|logo|episode}-default/{id_value}.{jpg|png}
@@ -103,4 +103,4 @@ to match.
 
 ## License
 
-[MIT](LICENSE) — not affiliated with RPDB or the Jellyfin project.
+[MIT](LICENSE) — not affiliated with the Jellyfin project.
