@@ -40,10 +40,17 @@ jobs:
         id: package
         run: |
           mkdir -p artifacts
-          ZIP=$(jprm plugin build . --version "${{ steps.version.outputs.version }}" --output ./artifacts)
+          jprm plugin build . --version "${{ steps.version.outputs.version }}" --output ./artifacts
+          ZIP=$(ls artifacts/*.zip | head -1)
           echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
-          echo "MD5 checksum:"
-          md5sum "$ZIP"
+          MD5=$(md5sum "$ZIP" | cut -d' ' -f1)
+          echo "md5=$MD5" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Plugin package"
+            echo ""
+            echo "- file: \`$(basename "$ZIP")\`"
+            echo "- md5: \`$MD5\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Create release
         uses: softprops/action-gh-release@v2
