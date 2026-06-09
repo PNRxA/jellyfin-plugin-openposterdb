@@ -1,0 +1,52 @@
+name: release
+
+# Tag a release to build the plugin zip and attach it to a GitHub Release:
+#   git tag v1.0.0.0 && git push origin v1.0.0.0
+# After the release is published, copy the printed MD5 checksum and the asset
+# URL into manifest.json so Jellyfin's plugin catalog can serve the update.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install jprm
+        run: pip install jprm
+
+      - name: Derive version
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build plugin zip
+        id: package
+        run: |
+          mkdir -p artifacts
+          ZIP=$(jprm plugin build . --version "${{ steps.version.outputs.version }}" --output ./artifacts)
+          echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
+          echo "MD5 checksum:"
+          md5sum "$ZIP"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.package.outputs.zip }}
+          generate_release_notes: true

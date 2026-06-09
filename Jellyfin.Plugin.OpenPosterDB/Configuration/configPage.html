@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>OpenPosterDB</title>
+</head>
+<body>
+<div id="OpenPosterDBConfigPage" data-role="page" class="page type-interior pluginConfigurationPage"
+     data-require="emby-input,emby-button,emby-checkbox">
+    <div data-role="content">
+        <div class="content-primary">
+            <form id="OpenPosterDBConfigForm">
+                <div class="verticalSection">
+                    <h2 class="sectionTitle">OpenPosterDB</h2>
+                    <p class="fieldDescription">
+                        Fetches posters, backdrops, logos and episode stills (with rating badges)
+                        from a self-hosted OpenPosterDB / RPDB-compatible instance, by each item's
+                        IMDb / TMDB / TVDB id.
+                    </p>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="BaseUrl">Base URL</label>
+                    <input is="emby-input" type="text" id="BaseUrl" name="BaseUrl" />
+                    <div class="fieldDescription">
+                        Your OpenPosterDB instance, e.g. <code>https://openposterdb.com</code> or
+                        <code>http://localhost:3000</code> (no trailing slash needed).
+                    </div>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="ApiKey">API key</label>
+                    <input is="emby-input" type="text" id="ApiKey" name="ApiKey" />
+                    <div class="fieldDescription">Your 64-character OpenPosterDB API key.</div>
+                </div>
+
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="EnablePosters" name="EnablePosters" />
+                        <span>Posters (Primary)</span>
+                    </label>
+                </div>
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="EnableBackdrops" name="EnableBackdrops" />
+                        <span>Backdrops</span>
+                    </label>
+                </div>
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="EnableLogos" name="EnableLogos" />
+                        <span>Logos</span>
+                    </label>
+                </div>
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label>
+                        <input is="emby-checkbox" type="checkbox" id="EnableEpisodes" name="EnableEpisodes" />
+                        <span>Episode stills</span>
+                    </label>
+                </div>
+
+                <div class="inputContainer">
+                    <label class="inputLabel inputLabelUnfocused" for="ExtraQuery">Extra query parameters (optional)</label>
+                    <input is="emby-input" type="text" id="ExtraQuery" name="ExtraQuery" />
+                    <div class="fieldDescription">
+                        Appended verbatim to every image request, e.g.
+                        <code>lang=de&amp;imageSize=large&amp;badge_size=l</code>. See the OpenPosterDB
+                        docs for the full parameter list.
+                    </div>
+                </div>
+
+                <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                    <span>Save</span>
+                </button>
+                <button is="emby-button" type="button" id="TestButton" class="raised block emby-button">
+                    <span>Test connection</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        (function () {
+            var pluginId = 'f3a7c2e1-9b4d-4e6a-8c1f-2d5b7e9a0c34';
+
+            function loadConfig(page) {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                    page.querySelector('#BaseUrl').value = config.BaseUrl || '';
+                    page.querySelector('#ApiKey').value = config.ApiKey || '';
+                    page.querySelector('#EnablePosters').checked = config.EnablePosters !== false;
+                    page.querySelector('#EnableBackdrops').checked = config.EnableBackdrops !== false;
+                    page.querySelector('#EnableLogos').checked = config.EnableLogos !== false;
+                    page.querySelector('#EnableEpisodes').checked = config.EnableEpisodes !== false;
+                    page.querySelector('#ExtraQuery').value = config.ExtraQuery || '';
+                    Dashboard.hideLoadingMsg();
+                });
+            }
+
+            function saveConfig(page) {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                    config.BaseUrl = page.querySelector('#BaseUrl').value.trim();
+                    config.ApiKey = page.querySelector('#ApiKey').value.trim();
+                    config.EnablePosters = page.querySelector('#EnablePosters').checked;
+                    config.EnableBackdrops = page.querySelector('#EnableBackdrops').checked;
+                    config.EnableLogos = page.querySelector('#EnableLogos').checked;
+                    config.EnableEpisodes = page.querySelector('#EnableEpisodes').checked;
+                    config.ExtraQuery = page.querySelector('#ExtraQuery').value.trim();
+                    ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {
+                        Dashboard.processPluginConfigurationUpdateResult(result);
+                    });
+                });
+            }
+
+            function testConnection(page) {
+                var baseUrl = page.querySelector('#BaseUrl').value.trim().replace(/\/+$/, '');
+                var apiKey = page.querySelector('#ApiKey').value.trim();
+                if (!baseUrl || !apiKey) {
+                    Dashboard.alert('Enter a Base URL and API key first.');
+                    return;
+                }
+                Dashboard.showLoadingMsg();
+                fetch(baseUrl + '/' + encodeURIComponent(apiKey) + '/isValid')
+                    .then(function (resp) {
+                        Dashboard.hideLoadingMsg();
+                        if (resp.ok) {
+                            Dashboard.alert('Success — the API key is valid.');
+                        } else if (resp.status === 401) {
+                            Dashboard.alert('The API key was rejected (401 Unauthorized).');
+                        } else {
+                            Dashboard.alert('Unexpected response from OpenPosterDB: HTTP ' + resp.status + '.');
+                        }
+                    })
+                    .catch(function () {
+                        Dashboard.hideLoadingMsg();
+                        Dashboard.alert('Could not reach ' + baseUrl + '. Check the URL and that the instance is reachable from your browser.');
+                    });
+            }
+
+            var page = document.querySelector('#OpenPosterDBConfigPage');
+
+            page.addEventListener('pageshow', function () {
+                loadConfig(page);
+            });
+
+            page.querySelector('#OpenPosterDBConfigForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                saveConfig(page);
+                return false;
+            });
+
+            page.querySelector('#TestButton').addEventListener('click', function () {
+                testConnection(page);
+            });
+        })();
+    </script>
+</div>
+</body>
+</html>

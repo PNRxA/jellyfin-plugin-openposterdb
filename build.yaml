@@ -1,0 +1,24 @@
+---
+name: "OpenPosterDB"
+guid: "f3a7c2e1-9b4d-4e6a-8c1f-2d5b7e9a0c34"
+version: "1.0.0.0"
+targetAbi: "10.10.3.0"
+framework: "net8.0"
+overview: "Rating-badge artwork from a self-hosted OpenPosterDB instance."
+description: >
+  Fetches posters, backdrops, logos and episode stills (with rating badges)
+  from a self-hosted OpenPosterDB / RPDB-compatible instance, by each library
+  item's IMDb / TMDB / TVDB id. The base URL and API key are configurable, so
+  it points at your own instance rather than a hosted service.
+category: "Metadata"
+owner: "PNRxA"
+artifacts:
+  - "Jellyfin.Plugin.OpenPosterDB.dll"
+changelog: >
+  ### 1.0.0.0
+
+  - Initial release.
+  - Movie, Series and Episode remote image providers
+    (poster, backdrop, logo, and episode still).
+  - Configurable Base URL + API key, per-image-type toggles, and an optional
+    extra-query passthrough for OpenPosterDB styling parameters.

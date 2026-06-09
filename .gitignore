@@ -1,0 +1,15 @@
+# Build output
+bin/
+obj/
+artifacts/
+*.zip
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# OS
+.DS_Store
