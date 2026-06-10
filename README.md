@@ -36,7 +36,10 @@ For each library item, it asks Jellyfin to fetch artwork from:
 4. **Dashboard → Plugins → OpenPosterDB** and set:
    - **Base URL** — e.g. `https://openposterdb.com` or `http://your-host:3000`
    - **API key** — your 64-character OpenPosterDB key
-   - Click **Test connection** to validate the key.
+   - **Image-type toggles** — enable/disable posters, backdrops, logos and episode stills
+   - **Extra query parameters** *(optional)* — appended to every request, e.g.
+     `lang=de&imageSize=large&badge_size=l` (see the OpenPosterDB docs for the full list)
+   - Click **Test connection** — it loads a sample poster to confirm the Base URL and key work.
 5. For each **Movies** / **Shows** library: **Manage Library → Edit → Image Fetchers**, drag
    **OpenPosterDB** to the top so it wins.
 6. To backfill existing items: **Scan Library** with **“Replace existing images”** enabled.
@@ -57,11 +60,12 @@ TMDB. Logos are requested as `.png`; everything else as `.jpg`.
 
 ## Build from source
 
-Requires the .NET 8 SDK.
+Requires the .NET 9 SDK (the published build targets Jellyfin 10.11 / `net9.0`; the legacy Jellyfin
+10.10 / `net8.0` build needs the .NET 8 SDK).
 
 ```bash
 dotnet build --configuration Release
-# -> Jellyfin.Plugin.OpenPosterDB/bin/Release/net8.0/Jellyfin.Plugin.OpenPosterDB.dll
+# -> Jellyfin.Plugin.OpenPosterDB/bin/Release/net9.0/Jellyfin.Plugin.OpenPosterDB.dll
 ```
 
 To produce an installable plugin zip (matching the manifest), use
