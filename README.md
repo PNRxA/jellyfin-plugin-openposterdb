@@ -83,11 +83,15 @@ the zip and attaches it to a GitHub Release. Then update `manifest.json`:
 
 ## Jellyfin version / ABI
 
-Targets **Jellyfin 10.10.x** (net8.0, `Jellyfin.Controller` 10.10.3, `targetAbi` 10.10.3.0).
+Targets **Jellyfin 10.11.x** (net9.0, `Jellyfin.Controller` 10.11.11, `targetAbi` 10.11.0.0).
 
-To target **Jellyfin 10.11.x**: bump `<TargetFramework>` to `net9.0` and `Jellyfin.Controller` to
-`10.11.*` in the `.csproj`, and update `targetAbi` / `framework` in `build.yaml` and `manifest.json`
-to match.
+The published `manifest.json` also keeps a **10.10.x** build (`1.0.0.1`, net8.0, `targetAbi`
+10.10.3.0); Jellyfin automatically installs the newest version whose `targetAbi` your server
+satisfies, so 10.10 servers get `1.0.0.1` and 10.11 servers get `1.1.0.0`.
+
+To re-target another Jellyfin line: set `<TargetFramework>` (net9.0 for 10.11, net8.0 for 10.10) and
+the `Jellyfin.Controller` version in the `.csproj`, and update `targetAbi` / `framework` in
+`build.yaml` and `manifest.json` to match.
 
 ## Troubleshooting
 

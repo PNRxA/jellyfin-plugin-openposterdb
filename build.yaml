@@ -1,9 +1,9 @@
 ---
 name: "OpenPosterDB"
 guid: "f3a7c2e1-9b4d-4e6a-8c1f-2d5b7e9a0c34"
-version: "1.0.0.1"
-targetAbi: "10.10.3.0"
-framework: "net8.0"
+version: "1.1.0.0"
+targetAbi: "10.11.0.0"
+framework: "net9.0"
 overview: "Rating-badge artwork from a self-hosted OpenPosterDB instance."
 description: >
   Fetches posters, backdrops, logos and episode stills (with rating badges)
@@ -15,6 +15,11 @@ owner: "PNRxA"
 artifacts:
   - "Jellyfin.Plugin.OpenPosterDB.dll"
 changelog: >
+  ### 1.1.0.0
+
+  - Target Jellyfin 10.11.x (net9.0). For Jellyfin 10.10.x use 1.0.0.1.
+
+
   ### 1.0.0.1
 
   - Tidy plugin description text.

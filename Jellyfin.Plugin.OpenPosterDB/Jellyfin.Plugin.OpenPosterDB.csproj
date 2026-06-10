@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>disable</ImplicitUsings>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <RootNamespace>Jellyfin.Plugin.OpenPosterDB</RootNamespace>
     <AssemblyName>Jellyfin.Plugin.OpenPosterDB</AssemblyName>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
     <!-- Keep the build green even if Jellyfin's API surfaces new obsoletions. -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -18,10 +18,10 @@
     <!--
       Bump this in lockstep with the Jellyfin server you target, and update
       `targetAbi` in build.yaml / manifest.json to match.
+        Jellyfin 10.11.x -> Jellyfin.Controller 10.11.*  (net9.0)
         Jellyfin 10.10.x -> Jellyfin.Controller 10.10.*  (net8.0)
-        Jellyfin 10.11.x -> Jellyfin.Controller 10.11.*  (net9.0, also bump TargetFramework)
     -->
-    <PackageReference Include="Jellyfin.Controller" Version="10.10.3" />
+    <PackageReference Include="Jellyfin.Controller" Version="10.11.11" />
   </ItemGroup>
 
   <ItemGroup>
