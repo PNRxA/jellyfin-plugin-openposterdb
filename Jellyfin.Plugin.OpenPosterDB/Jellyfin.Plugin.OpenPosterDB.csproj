@@ -8,8 +8,8 @@
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <RootNamespace>Jellyfin.Plugin.OpenPosterDB</RootNamespace>
     <AssemblyName>Jellyfin.Plugin.OpenPosterDB</AssemblyName>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>1.1.0.1</AssemblyVersion>
+    <FileVersion>1.1.0.1</FileVersion>
     <!-- Keep the build green even if Jellyfin's API surfaces new obsoletions. -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>

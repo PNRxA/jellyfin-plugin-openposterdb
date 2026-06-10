@@ -9,6 +9,14 @@
     "imageUrl": "",
     "versions": [
       {
+        "version": "1.1.0.1",
+        "changelog": "Config 'Test connection' now loads a poster image instead of a fetch() call, so it works regardless of the instance's browser CORS policy. Targets Jellyfin 10.11.x.",
+        "targetAbi": "10.11.0.0",
+        "sourceUrl": "https://github.com/PNRxA/jellyfin-plugin-openposterdb/releases/download/v1.1.0.1/openposterdb_1.1.0.1.zip",
+        "checksum": "REPLACE_WITH_MD5_OF_RELEASE_ZIP",
+        "timestamp": "REPLACE_WITH_RELEASE_TIMESTAMP"
+      },
+      {
         "version": "1.1.0.0",
         "changelog": "Target Jellyfin 10.11.x (net9.0). For Jellyfin 10.10.x use 1.0.0.1.",
         "targetAbi": "10.11.0.0",

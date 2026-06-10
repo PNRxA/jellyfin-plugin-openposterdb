@@ -120,22 +120,36 @@
                     Dashboard.alert('Enter a Base URL and API key first.');
                     return;
                 }
+                // Browsers block reading a cross-origin fetch() response unless the
+                // instance sends matching CORS headers for this dashboard's origin, so
+                // a fetch-based check fails even when the instance is perfectly reachable.
+                // Instead we load an actual poster as an <img>, which is not subject to
+                // CORS. A successful load means the Base URL, API key and image pipeline
+                // all work from your browser.
                 Dashboard.showLoadingMsg();
-                fetch(baseUrl + '/' + encodeURIComponent(apiKey) + '/isValid')
-                    .then(function (resp) {
-                        Dashboard.hideLoadingMsg();
-                        if (resp.ok) {
-                            Dashboard.alert('Success — the API key is valid.');
-                        } else if (resp.status === 401) {
-                            Dashboard.alert('The API key was rejected (401 Unauthorized).');
-                        } else {
-                            Dashboard.alert('Unexpected response from OpenPosterDB: HTTP ' + resp.status + '.');
-                        }
-                    })
-                    .catch(function () {
-                        Dashboard.hideLoadingMsg();
-                        Dashboard.alert('Could not reach ' + baseUrl + '. Check the URL and that the instance is reachable from your browser.');
-                    });
+                var testUrl = baseUrl + '/' + encodeURIComponent(apiKey) + '/imdb/poster-default/tt0111161.jpg';
+                var img = new Image();
+                var done = false;
+                var timer = setTimeout(function () { finish(false); }, 15000);
+                function finish(ok) {
+                    if (done) {
+                        return;
+                    }
+                    done = true;
+                    clearTimeout(timer);
+                    Dashboard.hideLoadingMsg();
+                    if (ok) {
+                        Dashboard.alert('Success — reached OpenPosterDB and loaded a test poster for your key.');
+                    } else {
+                        Dashboard.alert('Could not load a test image from ' + baseUrl + '. '
+                            + 'The Base URL or API key may be wrong, or the instance may be unreachable from your browser. '
+                            + 'Note: this check runs in your browser — the plugin fetches images from the Jellyfin server, '
+                            + 'which may still work even if this test fails.');
+                    }
+                }
+                img.onload = function () { finish(true); };
+                img.onerror = function () { finish(false); };
+                img.src = testUrl;
             }
 
             var page = document.querySelector('#OpenPosterDBConfigPage');
