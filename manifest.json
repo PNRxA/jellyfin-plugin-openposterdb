@@ -13,8 +13,8 @@
         "changelog": "Target Jellyfin 10.11.x (net9.0). For Jellyfin 10.10.x use 1.0.0.1.",
         "targetAbi": "10.11.0.0",
         "sourceUrl": "https://github.com/PNRxA/jellyfin-plugin-openposterdb/releases/download/v1.1.0.0/openposterdb_1.1.0.0.zip",
-        "checksum": "REPLACE_WITH_MD5_OF_RELEASE_ZIP",
-        "timestamp": "REPLACE_WITH_RELEASE_TIMESTAMP"
+        "checksum": "14b53b6d7435925c17c0cdd7292f94ed",
+        "timestamp": "2026-06-10T12:45:11Z"
       },
       {
         "version": "1.0.0.1",
