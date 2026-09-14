@@ -1,9 +1,9 @@
 name: release
 
-# Tag a release to build the plugin zip and attach it to a GitHub Release:
-#   git tag v1.0.0.0 && git push origin v1.0.0.0
-# After the release is published, copy the printed MD5 checksum and the asset
-# URL into manifest.json so Jellyfin's plugin catalog can serve the update.
+# Tag a release to build the plugin zip, attach it to a GitHub Release, and
+# publish the version (asset URL, MD5 checksum, timestamp) to manifest.json on
+# main so Jellyfin's plugin catalog can serve the update:
+#   git tag v1.2.0.0 && git push origin v1.2.0.0
 
 on:
   push:
@@ -57,3 +57,21 @@ jobs:
         with:
           files: ${{ steps.package.outputs.zip }}
           generate_release_notes: true
+
+      # Runs only after the zip is attached, so the manifest never points at a
+      # missing asset. Pushes with the workflow's GITHUB_TOKEN (contents: write).
+      - name: Publish version to plugin manifest
+        env:
+          ZIP: ${{ steps.package.outputs.zip }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git fetch origin main
+          git checkout -B main origin/main
+          python3 scripts/publish-manifest.py \
+            --zip "$ZIP" \
+            --url "https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/$(basename "$ZIP")"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add manifest.json
+          git commit -m "release: publish v${VERSION} to plugin manifest"
+          git push origin main

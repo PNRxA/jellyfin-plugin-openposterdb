@@ -78,12 +78,15 @@ jprm plugin build .
 
 ### Releasing
 
-`git tag v1.0.0.0 && git push origin v1.0.0.0` triggers `.github/workflows/release.yml`, which builds
-the zip and attaches it to a GitHub Release. Then update `manifest.json`:
+1. Bump `AssemblyVersion` / `FileVersion` in the `.csproj` and `version` + `changelog` in
+   `build.yaml` (four-part version, e.g. `1.2.0.0`), and merge to `main`.
+2. `git tag v1.2.0.0 && git push origin v1.2.0.0` triggers `.github/workflows/release.yml`, which
+   builds the zip, attaches it to a GitHub Release, and then runs `scripts/publish-manifest.py` to
+   add the version to `manifest.json` on `main` (asset URL, MD5 checksum, timestamp, and the
+   newest `build.yaml` changelog section) in a `release: publish vX.Y.Z.W to plugin manifest` commit.
 
-- `versions[].sourceUrl` → the uploaded asset URL
-- `versions[].checksum` → the MD5 printed in the release job logs
-- `versions[].timestamp` → the release time (ISO-8601)
+No manual `manifest.json` edit is needed. If a release ever has to be republished, re-running the
+script with the zip and its asset URL replaces that version's entry.
 
 ## Jellyfin version / ABI
 
