@@ -36,6 +36,19 @@ jobs:
         id: version
         run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
+      # The tag is the only version source jprm sees; refuse to publish a
+      # release whose tag disagrees with build.yaml or the csproj.
+      - name: Check tag matches build.yaml and csproj
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          yaml_version=$(sed -n 's/^version: *"\(.*\)"/\1/p' build.yaml)
+          csproj_version=$(sed -n 's/.*<AssemblyVersion>\(.*\)<\/AssemblyVersion>.*/\1/p' Jellyfin.Plugin.OpenPosterDB/Jellyfin.Plugin.OpenPosterDB.csproj)
+          if [ "$VERSION" != "$yaml_version" ] || [ "$VERSION" != "$csproj_version" ]; then
+            echo "::error::tag v$VERSION does not match build.yaml ($yaml_version) / csproj AssemblyVersion ($csproj_version)"
+            exit 1
+          fi
+
       - name: Build plugin zip
         id: package
         run: |
