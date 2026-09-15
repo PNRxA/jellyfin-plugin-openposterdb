@@ -94,8 +94,11 @@ Targets **Jellyfin 12.0.x** (net10.0, `Jellyfin.Controller` 12.0.0, `targetAbi` 
 
 The published `manifest.json` also keeps a **10.11.x** build (`1.1.0.1`, net9.0, `targetAbi`
 10.11.0.0) and a **10.10.x** build (`1.0.0.1`, net8.0, `targetAbi` 10.10.3.0); Jellyfin
-automatically installs the newest version whose `targetAbi` your server satisfies, so 10.10 servers
-get `1.0.0.1`, 10.11 servers get `1.1.0.1` and 12.0 servers get `1.2.0.0`.
+automatically installs the newest version whose `targetAbi` your server satisfies, so 10.10.3+ servers
+get `1.0.0.1`, 10.11 servers get `1.1.0.1` and 12.0 servers get `1.2.0.0` (once it is published).
+
+The manifest entry for a new version is added by the release commit, after the tagged release and its
+zip exist, so `main` never advertises a download that is not there yet.
 
 To re-target another Jellyfin line: set `<TargetFramework>` (net10.0 for 12.0, net9.0 for 10.11,
 net8.0 for 10.10) and the `Jellyfin.Controller` version in the `.csproj`, and update `targetAbi` /
