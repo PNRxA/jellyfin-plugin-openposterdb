@@ -19,6 +19,9 @@ For each library item, it asks Jellyfin to fetch artwork from:
 
 - **Movies** — poster (Primary), backdrop, logo
 - **Series** — poster (Primary), backdrop, logo
+- **Seasons** — poster (Primary), gated behind the existing **Enable posters** toggle. Requires an
+  OpenPosterDB server that understands the `season-{series_id}-S{n}` path convention; against a
+  stock OpenPosterDB instance this fetcher simply finds nothing to add.
 - **Episodes** — per-episode still with episode-level rating badges
 - Configurable **Base URL** + **API key**, validated against `/{ApiKey}/isValid`
 - Per-image-type toggles
@@ -53,6 +56,7 @@ For each library item, it asks Jellyfin to fetch artwork from:
 |------|--------------|---------------------------|
 | Movie | IMDb → TMDB → TVDB | `/imdb/poster-default/tt0111161.jpg`, `/tmdb/poster-default/movie-550.jpg` |
 | Series | IMDb → TMDB → TVDB | `/tmdb/poster-default/series-1396.jpg` |
+| Season | parent series id + season number | `/imdb/poster-default/season-tt0903747-S1.jpg` |
 | Episode | parent series id + S/E | `/imdb/episode-default/episode-tt0903747-S1E1.jpg` |
 
 IMDb is preferred because it is the most reliably populated id and OpenPosterDB cross-resolves it via
