@@ -60,12 +60,12 @@ TMDB. Logos are requested as `.png`; everything else as `.jpg`.
 
 ## Build from source
 
-Requires the .NET 9 SDK (the published build targets Jellyfin 10.11 / `net9.0`; the legacy Jellyfin
-10.10 / `net8.0` build needs the .NET 8 SDK).
+Requires the .NET 10 SDK (the published build targets Jellyfin 12.0 / `net10.0`; the legacy
+Jellyfin 10.11 / `net9.0` and 10.10 / `net8.0` builds need the .NET 9 and .NET 8 SDKs respectively).
 
 ```bash
 dotnet build --configuration Release
-# -> Jellyfin.Plugin.OpenPosterDB/bin/Release/net9.0/Jellyfin.Plugin.OpenPosterDB.dll
+# -> Jellyfin.Plugin.OpenPosterDB/bin/Release/net10.0/Jellyfin.Plugin.OpenPosterDB.dll
 ```
 
 To produce an installable plugin zip (matching the manifest), use
@@ -87,15 +87,19 @@ the zip and attaches it to a GitHub Release. Then update `manifest.json`:
 
 ## Jellyfin version / ABI
 
-Targets **Jellyfin 10.11.x** (net9.0, `Jellyfin.Controller` 10.11.11, `targetAbi` 10.11.0.0).
+Targets **Jellyfin 12.0.x** (net10.0, `Jellyfin.Controller` 12.0.0, `targetAbi` 12.0.0.0).
 
-The published `manifest.json` also keeps a **10.10.x** build (`1.0.0.1`, net8.0, `targetAbi`
-10.10.3.0); Jellyfin automatically installs the newest version whose `targetAbi` your server
-satisfies, so 10.10 servers get `1.0.0.1` and 10.11 servers get `1.1.0.0`.
+The published `manifest.json` also keeps a **10.11.x** build (`1.1.0.1`, net9.0, `targetAbi`
+10.11.0.0) and a **10.10.x** build (`1.0.0.1`, net8.0, `targetAbi` 10.10.3.0); Jellyfin
+automatically installs the newest version whose `targetAbi` your server satisfies, so 10.10.3+ servers
+get `1.0.0.1`, 10.11 servers get `1.1.0.1` and 12.0 servers get `1.2.0.0` (once it is published).
 
-To re-target another Jellyfin line: set `<TargetFramework>` (net9.0 for 10.11, net8.0 for 10.10) and
-the `Jellyfin.Controller` version in the `.csproj`, and update `targetAbi` / `framework` in
-`build.yaml` and `manifest.json` to match.
+The manifest entry for a new version is added by the release commit, after the tagged release and its
+zip exist, so `main` never advertises a download that is not there yet.
+
+To re-target another Jellyfin line: set `<TargetFramework>` (net10.0 for 12.0, net9.0 for 10.11,
+net8.0 for 10.10) and the `Jellyfin.Controller` version in the `.csproj`, and update `targetAbi` /
+`framework` in `build.yaml` and `manifest.json` to match.
 
 ## Troubleshooting
 
